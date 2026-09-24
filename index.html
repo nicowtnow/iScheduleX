@@ -3,81 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>i$chedule X - Ultimate Aqua Suite</title>
+    <title>iFruit Phone - Los Santos OS</title>
     
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
 
-    <!-- Firebase SDKs -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyBFl5eVSx1NSJPpDlSxbHIxjzT18nXyTmI",
-            authDomain: "ischedule-46846.firebaseapp.com",
-            projectId: "ischedule-46846",
-            storageBucket: "ischedule-46846.firebasestorage.app",
-            messagingSenderId: "629536000069",
-            appId: "1:629536000069:web:2330e6f33d4cf4821c3b2c",
-            measurementId: "G-T3PFG3BCVJ"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-        const docRef = doc(db, "schedules", "postit_user_v3");
-
-        window.saveDataToCloud = async function(data) {
-            try {
-                await setDoc(docRef, data);
-            } catch (e) {
-                console.error("Error al guardar en Firebase:", e);
-            }
-        };
-
-        window.initRealtimeSync = function(callback) {
-            onSnapshot(docRef, (docSnap) => {
-                if (docSnap.exists()) {
-                    callback(docSnap.data());
-                }
-            }, (error) => {
-                console.error("Error en tiempo real:", error);
-            });
-        };
-        
-        window.dispatchEvent(new Event('firebase-ready'));
-    </script>
-
     <style>
-        :root {
-            --theme-primary: #007aff;
-            --theme-gradient: linear-gradient(to bottom, #007aff, #0056b3);
-            --theme-header: linear-gradient(to bottom, #d4d4d4 0%, #b5b5b5 50%, #8c8c8c 51%, #a6a6a6 100%);
-        }
-
-        body.theme-green {
-            --theme-primary: #28a745;
-            --theme-gradient: linear-gradient(to bottom, #28a745, #1e7e34);
-            --theme-header: linear-gradient(to bottom, #d4f0d8 0%, #b5e2be 50%, #8cc297 51%, #a3d2ad 100%);
-        }
-
-        body.theme-pink {
-            --theme-primary: #e83e8c;
-            --theme-gradient: linear-gradient(to bottom, #e83e8c, #c81e70);
-            --theme-header: linear-gradient(to bottom, #fcd8e7 0%, #f7b6d1 50%, #e28fae 51%, #efa7c2 100%);
-        }
-
         * {
             box-sizing: border-box;
             -webkit-user-select: none;
             user-select: none;
+            margin: 0;
+            padding: 0;
         }
 
         body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-            background: #2b2b2b url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="4" height="4" viewBox="0 0 4 4"><path fill="%23222" fill-opacity="0.4" d="M1 3h1v1H1V3zm2-2h1v1H3V1z"/></svg>');
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background: #111 url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="4" height="4" viewBox="0 0 4 4"><path fill="%23222" fill-opacity="0.4" d="M1 3h1v1H1V3zm2-2h1v1H3V1z"/></svg>');
             height: 100vh;
             display: flex;
             justify-content: center;
@@ -85,841 +27,373 @@
             overflow: hidden;
         }
 
-        #device-frame {
+        /* Carcasa del Celular iFruit */
+        #ifruit-case {
             width: 100%;
             height: 100%;
-            max-width: 480px;
-            max-height: 100vh;
-            background: #f2f2f7;
+            max-width: 380px;
+            max-height: 750px;
+            background: #333d48; /* Color azul grisáceo de la carcasa de GTA V */
+            border-radius: 36px;
+            padding: 14px;
             display: flex;
             flex-direction: column;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8), inset 0 2px 5px rgba(255,255,255,0.2);
             position: relative;
-            box-shadow: 0 0 40px rgba(0,0,0,0.8);
-            overflow: hidden;
+            border: 4px solid #222c35;
         }
 
         @media (min-width: 768px) {
-            #device-frame {
-                height: 88vh;
-                max-height: 850px;
-                border-radius: 24px;
-                border: 8px solid #333;
-                box-shadow: 0 20px 50px rgba(0,0,0,0.9);
+            #ifruit-case {
+                height: 82vh;
             }
         }
 
-        /* Barra superior Mac Aqua Dinámica */
-        #aqua-header {
-            background: var(--theme-header);
-            border-bottom: 1px solid #555;
-            padding: 8px 12px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            color: #fff;
-            box-shadow: inset 0 1px 0 rgba(255,255,255,0.8);
-            flex-shrink: 0;
-            z-index: 20;
-        }
-
-        #aqua-header h1 {
-            margin: 0;
-            font-size: 15px;
-            font-weight: bold;
-            color: #111;
-            text-shadow: 0 1px 0 rgba(255,255,255,0.5);
-        }
-
-        .aqua-btn {
-            background: linear-gradient(to bottom, #ffffff 0%, #e0e0e0 50%, #cccccc 51%, #e6e6e6 100%);
-            border: 1px solid #777;
-            border-radius: 14px;
-            padding: 5px 12px;
-            font-size: 12px;
-            font-weight: bold;
-            color: #222;
-            cursor: pointer;
-            box-shadow: inset 0 1px 0 rgba(255,255,255,0.9), 0 1px 3px rgba(0,0,0,0.2);
-            text-shadow: 0 1px 0 rgba(255,255,255,0.8);
-        }
-
-        .aqua-btn:active {
-            background: linear-gradient(to bottom, #b5b5b5 0%, #cccccc 100%);
-            box-shadow: inset 0 1px 2px rgba(0,0,0,0.4);
-        }
-
-        .aqua-btn.danger {
-            background: linear-gradient(to bottom, #ff6b6b 0%, #fa5252 100%);
-            color: white;
-            border-color: #c92a2a;
-        }
-
-        .view-content {
-            display: none;
+        /* Pantalla Interna */
+        #ifruit-screen {
             flex: 1;
+            background: linear-gradient(135deg, #0b4f6c 0%, #01baef 50%, #70c1b3 100%);
+            background-image: radial-gradient(circle, rgba(255,255,255,0.15) 10%, transparent 10%),
+                              linear-gradient(135deg, #0b4f6c 0%, #01baef 50%, #70c1b3 100%);
+            background-size: 20px 20px, 100% 100%;
+            border-radius: 18px;
+            display: flex;
             flex-direction: column;
             overflow: hidden;
             position: relative;
+            box-shadow: inset 0 0 15px rgba(0,0,0,0.4);
         }
 
-        .view-content.active {
-            display: flex;
-        }
-
-        /* Widged Reloj de Clase en la parte superior del horario */
-        #class-clock-widget {
-            background: linear-gradient(135deg, #222 0%, #444 100%);
+        /* Barra de Estado Superior iFruit */
+        #ifruit-statusbar {
+            background: rgba(0, 0, 0, 0.75);
             color: #fff;
-            padding: 12px 16px;
-            margin: 12px 12px 0 12px;
-            border-radius: 12px;
-            border: 1px solid #555;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: inset 0 1px 3px rgba(255,255,255,0.2), 0 4px 10px rgba(0,0,0,0.15);
-        }
-
-        /* Horario Cuadrícula */
-        #grid-container {
-            flex: 1;
-            background: #fff;
-            background-image: linear-gradient(#e5e5e5 1px, transparent 1px), linear-gradient(90deg, #e5e5e5 1px, transparent 1px);
-            background-size: 20px 20px;
-            overflow-y: auto;
-            padding: 12px;
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-            align-content: start;
-        }
-
-        .subject-card {
-            background: linear-gradient(135deg, #fefefe 0%, #dedede 100%);
-            border: 1px solid #999;
-            border-radius: 12px;
-            padding: 12px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            min-height: 100px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            cursor: pointer;
-            transition: transform 0.1s;
-        }
-
-        .subject-card:active {
-            transform: scale(0.97);
-        }
-
-        /* Cuaderno de Raya */
-        #view-notebook {
-            background: #fff;
-            background-image: linear-gradient(#cce5ff 1px, transparent 1px);
-            background-size: 100% 28px;
-            flex: 1;
-            display: none;
-            flex-direction: column;
-            padding: 15px;
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            z-index: 40;
-        }
-
-        #view-notebook.active {
-            display: flex;
-        }
-
-        #notebook-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 12px;
-            background: rgba(255,255,255,0.9);
-            padding: 8px;
-            border-radius: 8px;
-            border: 1px solid #b0c4de;
-        }
-
-        #notebook-textarea {
-            flex: 1;
-            background: transparent;
-            border: none;
-            outline: none;
-            font-family: inherit;
-            font-size: 15px;
-            line-height: 28px;
-            color: #222;
-            resize: none;
-            padding: 0 4px;
-        }
-
-        /* Pizarra de Post-it */
-        #whiteboard {
-            flex: 1;
-            background: #fbfbfb;
-            background-image: radial-gradient(#dcdcdc 1px, transparent 1px);
-            background-size: 20px 20px;
-            overflow-y: auto;
-            padding: 15px;
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-            align-content: start;
-        }
-
-        @media (min-width: 768px) {
-            #whiteboard, #grid-container {
-                grid-template-columns: repeat(4, 1fr);
-            }
-        }
-
-        #empty-state {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-            text-align: center;
-            background: #fbfbfb;
-        }
-
-        .big-yellow-pill {
-            background: linear-gradient(135deg, #fff385 0%, #ffd700 50%, #e6be00 100%);
-            border: 1px solid #b89b00;
-            border-radius: 20px;
-            padding: 16px 32px;
-            font-size: 18px;
-            font-weight: bold;
-            color: #333;
-            cursor: pointer;
-            box-shadow: inset 0 2px 4px rgba(255,255,255,0.8), 0 6px 12px rgba(0,0,0,0.15);
-            text-shadow: 0 1px 0 rgba(255,255,255,0.6);
-        }
-
-        .postit-note {
-            background: linear-gradient(135deg, #fff9c4 0%, #fff176 100%);
-            border: 1px solid #d4c55d;
-            border-radius: 2px 2px 2px 16px;
-            padding: 12px;
-            min-height: 130px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            box-shadow: 2px 4px 10px rgba(0,0,0,0.12);
-            position: relative;
-        }
-
-        .postit-title {
-            font-weight: bold;
-            font-size: 14px;
-            color: #222;
-            border-bottom: 1px dashed rgba(0,0,0,0.15);
-            padding-bottom: 4px;
-            margin-bottom: 6px;
-        }
-
-        .postit-body {
             font-size: 12px;
-            color: #444;
-            flex: 1;
-            word-break: break-word;
-            line-height: 1.3;
-        }
-
-        .postit-footer {
+            padding: 6px 12px;
             display: flex;
-            justify-content: flex-end;
-            margin-top: 6px;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
         }
 
-        #floating-add-btn {
-            position: absolute;
-            bottom: 20px;
-            right: 20px;
-            background: linear-gradient(135deg, #fff385 0%, #ffd700 100%);
-            border: 1px solid #b89b00;
-            border-radius: 30px;
-            padding: 12px 20px;
-            font-size: 14px;
-            font-weight: bold;
-            color: #333;
-            cursor: pointer;
-            box-shadow: 0 6px 16px rgba(0,0,0,0.25);
-            z-index: 50;
-            display: none;
+        .status-left {
+            display: flex;
             align-items: center;
             gap: 6px;
         }
 
-        /* Modal Post-it */
-        #note-modal-overlay {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.5);
-            backdrop-filter: blur(2px);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 100;
+        /* Cabecera de la App Activa */
+        #app-header {
+            background: linear-gradient(to bottom, #5a6b7c 0%, #3d4a58 100%);
+            color: white;
+            text-align: center;
+            padding: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.6);
+            border-bottom: 1px solid #222;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.3);
         }
 
-        .center-postit-editor {
-            width: 280px;
-            height: 280px;
-            background: linear-gradient(135deg, #fffde7 0%, #fff9c4 100%);
-            border: 1px solid #d4c55d;
-            border-radius: 4px 4px 4px 24px;
-            padding: 16px;
+        /* Área de Iconos / Escritorio */
+        #app-desktop {
+            flex: 1;
+            padding: 20px 16px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            align-content: start;
+            overflow-y: auto;
+        }
+
+        .app-icon-item {
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            align-items: center;
+            cursor: pointer;
+            position: relative;
+            transition: transform 0.1s;
         }
 
-        .center-postit-editor input {
-            border: none;
-            background: transparent;
+        .app-icon-item:active {
+            transform: scale(0.92);
+        }
+
+        .app-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 14px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3), inset 0 2px 3px rgba(255,255,255,0.5);
+            font-size: 28px;
+            position: relative;
+        }
+
+        .app-label {
+            color: #fff;
+            font-size: 11px;
+            margin-top: 6px;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+            text-align: center;
             font-weight: bold;
-            font-size: 15px;
-            border-bottom: 1px dashed #b8b8b8;
-            padding-bottom: 4px;
-            outline: none;
         }
 
-        .center-postit-editor textarea {
+        /* Notificación roja estilo GTA V */
+        .notification-badge {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            background: #d9534f;
+            color: white;
+            font-size: 10px;
+            font-weight: bold;
+            padding: 2px 6px;
+            border-radius: 10px;
+            border: 1px solid #fff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        /* Vistas de Aplicaciones Internas */
+        .app-view {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: #f4f4f4;
+            display: none;
+            flex-direction: column;
+            z-index: 10;
+        }
+
+        .app-view.active {
+            display: flex;
+        }
+
+        .internal-header {
+            background: #222;
+            color: #fff;
+            padding: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: bold;
+        }
+
+        .back-btn {
+            background: #444;
             border: none;
-            background: transparent;
-            resize: none;
-            flex: 1;
-            margin-top: 8px;
-            font-size: 13px;
-            outline: none;
-            font-family: inherit;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            cursor: pointer;
         }
 
-        /* Ajustes, Temas y Mini Juego */
-        #view-settings {
-            padding: 16px;
+        .internal-content {
+            flex: 1;
+            padding: 15px;
             overflow-y: auto;
-            background: #f2f2f7;
+            font-size: 14px;
             color: #333;
         }
 
-        .settings-card {
-            background: #fff;
-            border-radius: 12px;
-            padding: 14px;
-            margin-bottom: 14px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-        }
-
-        .subject-manage-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 8px 0;
-            border-bottom: 1px solid #eee;
-            font-size: 13px;
-        }
-
-        .theme-selector-btns {
-            display: flex;
-            gap: 10px;
-            margin-top: 8px;
-        }
-
-        .theme-circle {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            cursor: pointer;
-            border: 2px solid #ccc;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-        }
-
-        /* Mini Buscaminas Retro */
-        #minesweeper-board {
-            display: grid;
-            grid-template-columns: repeat(8, 28px);
-            gap: 2px;
-            background: #888;
-            padding: 4px;
-            border: 2px inset #fff;
-            margin-top: 10px;
-            justify-content: center;
-        }
-
-        .mine-cell {
-            width: 28px;
-            height: 28px;
-            background: #c0c0c0;
-            border: 2px outset #fff;
-            font-size: 12px;
-            font-weight: bold;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-        }
-
-        .mine-cell.revealed {
-            background: #e0e0e0;
-            border: 1px solid #777;
-        }
-
-        /* Dock Inferior */
-        #aqua-dock {
-            background: linear-gradient(to bottom, rgba(240,240,240,0.9), rgba(200,200,200,0.95));
-            border-top: 1px solid rgba(255,255,255,0.6);
-            padding: 6px 10px;
+        /* Botones Inferiores Físicos del iFruit */
+        #ifruit-bottom-nav {
+            height: 50px;
+            background: rgba(0,0,0,0.85);
             display: flex;
             justify-content: space-around;
             align-items: center;
-            flex-shrink: 0;
-            z-index: 30;
+            border-top: 1px solid rgba(255,255,255,0.15);
+            border-bottom-left-radius: 14px;
+            border-bottom-right-radius: 14px;
         }
 
-        .dock-tab {
+        .nav-btn {
             background: transparent;
             border: none;
-            font-size: 12px;
-            font-weight: bold;
-            color: #555;
+            color: #aaa;
+            font-size: 20px;
             cursor: pointer;
-            padding: 6px 14px;
-            border-radius: 12px;
-            transition: all 0.2s;
+            transition: color 0.2s;
         }
 
-        .dock-tab.active {
-            background: var(--theme-gradient);
+        .nav-btn:hover, .nav-btn:active {
             color: #fff;
-            box-shadow: inset 0 1px 0 rgba(255,255,255,0.4), 0 2px 5px rgba(0,0,0,0.2);
         }
     </style>
 </head>
-<body class="theme-blue">
+<body>
 
-    <div id="device-frame">
-        <!-- Barra de Título -->
-        <div id="aqua-header">
-            <h1 id="header-title">i$chedule X</h1>
-            <button class="aqua-btn" onclick="resetAllData()">Restaurar</button>
+    <div id="ifruit-case">
+        <div id="ifruit-screen">
+            <!-- Barra de Estado iFruit -->
+            <div id="ifruit-statusbar">
+                <div class="status-left">
+                    <span>📶</span>
+                    <span>Fruit</span>
+                </div>
+                <div id="status-time">11:56</div>
+                <div class="status-right">
+                    <span>🔋</span>
+                </div>
+            </div>
+
+            <!-- Cabecera de la App -->
+            <div id="app-header">Snapmatic</div>
+
+            <!-- Escritorio con Iconos -->
+            <div id="app-desktop">
+                <!-- App 1: Mail -->
+                <div class="app-icon-item" onclick="openApp('mail')">
+                    <div class="app-icon" style="background: linear-gradient(135deg, #4da6ff, #0066cc);">
+                        ✉️
+                        <div class="notification-badge">7</div>
+                    </div>
+                    <span class="app-label">Mail</span>
+                </div>
+
+                <!-- App 2: Mensajes -->
+                <div class="app-icon-item" onclick="openApp('messages')">
+                    <div class="app-icon" style="background: linear-gradient(135deg, #70db70, #2eb82e);">
+                        💬
+                    </div>
+                    <span class="app-label">Mensajes</span>
+                </div>
+
+                <!-- App 3: Checklist / To-Do -->
+                <div class="app-icon-item" onclick="openApp('checklist')">
+                    <div class="app-icon" style="background: linear-gradient(135deg, #ffb366, #ff8000);">
+                        📋
+                    </div>
+                    <span class="app-label">Checklist</span>
+                </div>
+
+                <!-- App 4: Cloud / Sincronización -->
+                <div class="app-icon-item" onclick="openApp('cloud')">
+                    <div class="app-icon" style="background: linear-gradient(135deg, #b366ff, #7300e6);">
+                        ☁️
+                    </div>
+                    <span class="app-label">iFruit Cloud</span>
+                </div>
+
+                <!-- App 5: Contactos -->
+                <div class="app-icon-item" onclick="openApp('contacts')">
+                    <div class="app-icon" style="background: linear-gradient(135deg, #ff9966, #ff5050);">
+                        👤
+                    </div>
+                    <span class="app-label">Contactos</span>
+                </div>
+
+                <!-- App 6: Ajustes -->
+                <div class="app-icon-item" onclick="openApp('settings')">
+                    <div class="app-icon" style="background: linear-gradient(135deg, #999999, #4d4d4d);">
+                        ⚙️
+                    </div>
+                    <span class="app-label">Ajustes</span>
+                </div>
+
+                <!-- App 7: Cámara / Snapmatic -->
+                <div class="app-icon-item" onclick="openApp('snapmatic')">
+                    <div class="app-icon" style="background: linear-gradient(135deg, #ffff99, #cccc00);">
+                        📷
+                    </div>
+                    <span class="app-label">Snapmatic</span>
+                </div>
+
+                <!-- App 8: Navegador / Weazel News -->
+                <div class="app-icon-item" onclick="openApp('browser')">
+                    <div class="app-icon" style="background: linear-gradient(135deg, #66b3ff, #004080);">
+                        🌐
+                    </div>
+                    <span class="app-label">Eyefind</span>
+                </div>
+            </div>
+
+            <!-- VISTA INTERNA: Mail -->
+            <div id="view-mail" class="app-view">
+                <div class="internal-header">
+                    <span>Bandeja iFruit Mail</span>
+                    <button class="back-btn" onclick="closeApp()">Volver</button>
+                </div>
+                <div class="internal-content">
+                    <p><b>De:</b> Los Santos Customs</p>
+                    <p><b>Asunto:</b> Tu pedido está listo en el taller.</p>
+                    <hr style="margin: 10px 0;">
+                    <p><b>De:</b> Ammu-Nation</p>
+                    <p><b>Asunto:</b> Descuento del 20% en munición pesada este fin de semana.</p>
+                </div>
+            </div>
+
+            <!-- VISTA INTERNA: Snapmatic -->
+            <div id="view-snapmatic" class="app-view">
+                <div class="internal-header">
+                    <span>Galería Snapmatic</span>
+                    <button class="back-btn" onclick="closeApp()">Volver</button>
+                </div>
+                <div class="internal-content" style="text-align: center;">
+                    <p style="margin-bottom: 10px;">📸 Capturas desde Vinewood Hills</p>
+                    <div style="background: #ddd; height: 180px; border-radius: 8px; display: flex; justify-content: center; align-items: center; color: #777; border: 2px dashed #aaa;">
+                        [Sin fotos recientes]
+                    </div>
+                </div>
+            </div>
+
+            <!-- VISTA INTERNA: Ajustes -->
+            <div id="view-settings" class="app-view">
+                <div class="internal-header">
+                    <span>Configuración iFruit</span>
+                    <button class="back-btn" onclick="closeApp()">Volver</button>
+                </div>
+                <div class="internal-content">
+                    <p><b>Operador:</b> Ron Alternates</p>
+                    <p><b>Versión OS:</b> Los Santos Classic 1.0</p>
+                    <p style="margin-top: 15px; color: #666;">Estado de red: Conectado a la nube de Los Santos.</p>
+                </div>
+            </div>
+
         </div>
 
-        <!-- VISTA 1: HORARIO + RELOJ DE CLASE -->
-        <div id="view-schedule" class="view-content active">
-            <!-- Widget Reloj de Clase Estilo iOS Antiguo -->
-            <div id="class-clock-widget">
-                <div>
-                    <span style="font-size: 10px; color: #aaa; text-transform: uppercase; letter-spacing: 1px;">Reloj de Clase</span>
-                    <div id="class-status-text" style="font-size: 13px; font-weight: bold; color: #fff;">Calculando tiempo...</div>
-                </div>
-                <div id="class-countdown-timer" style="font-family: monospace; font-size: 20px; font-weight: bold; color: #ffd700;">--:--</div>
-            </div>
-            <div id="grid-container"></div>
-        </div>
-
-        <!-- VISTA 1.1: CUADERNO DE RAYA POR MATERIA -->
-        <div id="view-notebook" class="view-content">
-            <div id="notebook-header">
-                <div>
-                    <h3 id="notebook-title" style="margin:0; font-size:15px; color:#111;">Cuaderno</h3>
-                    <span style="font-size:11px; color:#555;">Apuntes de la materia</span>
-                </div>
-                <div style="display: flex; gap: 6px;">
-                    <button class="aqua-btn" onclick="saveNotebookContent()">Guardar</button>
-                    <button class="aqua-btn" onclick="switchTab('schedule')">Volver</button>
-                </div>
-            </div>
-            <textarea id="notebook-textarea" placeholder="Escribe tus apuntes aquí..."></textarea>
-        </div>
-
-        <!-- VISTA 2: NOTAS / PIZARRA DE POST-IT -->
-        <div id="view-notes" class="view-content">
-            <div id="empty-state">
-                <p style="color: #666; margin-bottom: 15px; font-size: 14px;">No hay notas en la pizarra todavía.</p>
-                <button class="big-yellow-pill" onclick="openNoteEditor()">Crear Nota</button>
-            </div>
-            <div id="whiteboard" style="display:none;"></div>
-            <button id="floating-add-btn" onclick="openNoteEditor()">+ Nueva Nota</button>
-        </div>
-
-        <!-- VISTA 3: AJUSTES, TEMAS Y MINI JUEGO -->
-        <div id="view-settings" class="view-content">
-            <!-- Selector de Temas -->
-            <div class="settings-card">
-                <h3 style="margin-top:0; font-size:14px;">Estética y Colores Aqua</h3>
-                <p style="font-size: 12px; color: #666; margin-bottom: 8px;">Elige el cristal de tu interfaz:</p>
-                <div class="theme-selector-btns">
-                    <div class="theme-circle" style="background: #007aff;" onclick="setTheme('blue')" title="Azul Clásico"></div>
-                    <div class="theme-circle" style="background: #28a745;" onclick="setTheme('green')" title="Verde OS X"></div>
-                    <div class="theme-circle" style="background: #e83e8c;" onclick="setTheme('pink')" title="Rosa Vibrante"></div>
-                </div>
-            </div>
-
-            <!-- Gestión de Materias -->
-            <div class="settings-card">
-                <h3 style="margin-top:0; font-size:14px;">Gestión de Materias (Máx. 20)</h3>
-                <div style="display: flex; gap: 6px; margin-bottom: 12px;">
-                    <input type="text" id="new-subject-name" placeholder="Materia..." style="flex:1; padding:6px; border:1px solid #ccc; border-radius:6px; font-size:13px; outline:none;">
-                    <input type="text" id="new-subject-salon" placeholder="Salón..." style="width:75px; padding:6px; border:1px solid #ccc; border-radius:6px; font-size:13px; outline:none;">
-                    <button class="aqua-btn" id="add-subject-btn" onclick="addNewSubject()" style="background:linear-gradient(to bottom, #5cd675, #28a745); color:white;">Guardar</button>
-                </div>
-                <div id="subjects-manage-list"></div>
-            </div>
-
-            <!-- Mini Juego Oculto: Buscaminas Retro -->
-            <div class="settings-card">
-                <div style="display:flex; justify-content:space-between; align-items:center;">
-                    <h3 style="margin:0; font-size:14px;">🎮 Modo Aburrimiento (Buscaminas)</h3>
-                    <button class="aqua-btn" onclick="initMinesweeper()">Reiniciar</button>
-                </div>
-                <div id="minesweeper-board"></div>
-            </div>
-        </div>
-
-        <!-- Modal Post-it -->
-        <div id="note-modal-overlay">
-            <div class="center-postit-editor">
-                <input type="text" id="note-title-input" placeholder="Título...">
-                <textarea id="note-body-input" placeholder="Escribe tu nota (máx. 25 palabras)..." oninput="checkWordLimit()"></textarea>
-                <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px solid rgba(0,0,0,0.1); padding-top:8px;">
-                    <span id="word-counter" style="font-size:11px; color:#666;">0/25 palabras</span>
-                    <button class="aqua-btn" style="background:linear-gradient(to bottom, #5cd675, #28a745); color:white;" onclick="saveNewNote()">Guardar</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Dock Inferior -->
-        <div id="aqua-dock">
-            <button id="dock-btn-schedule" class="dock-tab active" onclick="switchTab('schedule')">Horario</button>
-            <button id="dock-btn-notes" class="dock-tab" onclick="switchTab('notes')">Notas</button>
-            <button id="dock-btn-settings" class="dock-tab" onclick="switchTab('settings')">Ajustes</button>
+        <!-- Botones Inferiores de Navegación del iFruit -->
+        <div id="ifruit-bottom-nav">
+            <button class="nav-btn" onclick="openApp('browser')" title="Buscar">🔍</button>
+            <button class="nav-btn" onclick="closeApp()" title="Home">🍏</button>
+            <button class="nav-btn" onclick="closeApp()" title="Atrás">⬅️</button>
         </div>
     </div>
 
     <script>
-        const defaultData = {
-            updatedAt: 0,
-            theme: 'blue',
-            subjects: [
-                { id: "s1", name: "POE I", salon: "Salón 4", notebook: "" },
-                { id: "s2", name: "Filosofía I", salon: "Salón 2", notebook: "" },
-                { id: "s3", name: "Computación I", salon: "Lab Cómputo", notebook: "" },
-                { id: "s4", name: "Matemáticas I", salon: "Usos Múltiples", notebook: "" },
-                { id: "s5", name: "Física I", salon: "Salón 5", notebook: "" },
-                { id: "s6", name: "Química I", salon: "Lab Química", notebook: "" }
-            ],
-            notes: []
-        };
-
-        let localData = JSON.parse(localStorage.getItem('ischedule_x_data')) || defaultData;
-        let activeNotebookId = null;
-        let isSyncingFromCloud = false;
-
-        // Firebase Sync
-        window.addEventListener('firebase-ready', () => {
-            window.initRealtimeSync((cloudData) => {
-                if (!cloudData) return;
-                const cloudTime = cloudData.updatedAt || 0;
-                const localTime = localData.updatedAt || 0;
-
-                if (cloudTime > localTime) {
-                    isSyncingFromCloud = true;
-                    localData = cloudData;
-                    localStorage.setItem('ischedule_x_data', JSON.stringify(localData));
-                    applyTheme(localData.theme || 'blue');
-                    renderAll();
-                    isSyncingFromCloud = false;
-                } else if (localTime > cloudTime && cloudTime === 0) {
-                    window.saveDataToCloud(localData);
-                }
-            });
-        });
-
-        function saveAndSync() {
-            if (isSyncingFromCloud) return;
-            localData.updatedAt = Date.now();
-            localStorage.setItem('ischedule_x_data', JSON.stringify(localData));
-            if (window.saveDataToCloud) {
-                window.saveDataToCloud(localData);
-            }
-            renderAll();
-        }
-
-        function setTheme(themeName) {
-            localData.theme = themeName;
-            applyTheme(themeName);
-            saveAndSync();
-        }
-
-        function applyTheme(themeName) {
-            document.body.className = `theme-${themeName}`;
-        }
-
-        function switchTab(tabName) {
-            document.querySelectorAll('.view-content').forEach(v => v.classList.remove('active'));
-            document.getElementById('view-notebook').classList.remove('active');
-            document.querySelectorAll('.dock-tab').forEach(t => t.classList.remove('active'));
-
-            if (tabName === 'schedule') {
-                document.getElementById('view-schedule').classList.add('active');
-                document.getElementById('dock-btn-schedule').classList.add('active');
-                document.getElementById('header-title').innerText = 'i$chedule X';
-            } else if (tabName === 'notes') {
-                document.getElementById('view-notes').classList.add('active');
-                document.getElementById('dock-btn-notes').classList.add('active');
-                document.getElementById('header-title').innerText = 'Pizarra de Notas';
-            } else if (tabName === 'settings') {
-                document.getElementById('view-settings').classList.add('active');
-                document.getElementById('dock-btn-settings').classList.add('active');
-                document.getElementById('header-title').innerText = 'Ajustes y Extras';
-                initMinesweeper();
-            } else if (tabName === 'notebook') {
-                document.getElementById('view-notebook').classList.add('active');
+        function openApp(appName) {
+            // Ocultar todas las vistas
+            document.querySelectorAll('.app-view').forEach(v => v.classList.remove('active'));
+            
+            // Mostrar la app seleccionada si existe vista
+            const targetView = document.getElementById(`view-${appName}`);
+            if (targetView) {
+                targetView.classList.add('active');
+                document.getElementById('app-header').innerText = appName.toUpperCase();
+            } else {
+                document.getElementById('app-header').innerText = appName.toUpperCase();
             }
         }
 
-        function renderAll() {
-            renderSchedule();
-            renderNotes();
-            renderSettingsSubjects();
-            applyTheme(localData.theme || 'blue');
+        function closeApp() {
+            document.querySelectorAll('.app-view').forEach(v => v.classList.remove('active'));
+            document.getElementById('app-header').innerText = 'Snapmatic';
         }
 
-        function renderSchedule() {
-            const container = document.getElementById('grid-container');
-            container.innerHTML = "";
-            localData.subjects.forEach(sub => {
-                const card = document.createElement('div');
-                card.className = 'subject-card';
-                card.onclick = () => openNotebook(sub.id);
-                card.innerHTML = `
-                    <div>
-                        <h3 style="margin:0; font-size:14px; font-weight:bold;">${sub.name}</h3>
-                        <span style="font-size:11px; background:rgba(0,0,0,0.06); padding:2px 6px; border-radius:4px; margin-top:4px; display:inline-block;">${sub.salon}</span>
-                    </div>
-                    <div style="font-size:10px; color:var(--theme-primary); font-weight:bold; border-top:1px dashed rgba(0,0,0,0.15); padding-top:4px; margin-top:4px;">📖 Abrir Cuaderno</div>
-                `;
-                container.appendChild(card);
-            });
-        }
-
-        // Reloj de Clase Dinámico (Calcula bloques simulados de 50 minutos)
-        function updateClassClock() {
+        // Actualizar reloj dinámico
+        function updateClock() {
             const now = new Date();
-            const minutesTotal = now.getHours() * 60 + now.getMinutes();
-            // Supongamos bloques de clase de 50 min desde las 7:00 AM
-            const schoolStart = 7 * 60;
-            const classDuration = 50;
-            const breakDuration = 10;
-            const totalBlock = classDuration + breakDuration;
-
-            if (minutesTotal < schoolStart || minutesTotal > 15 * 60) {
-                document.getElementById('class-status-text').innerText = "Fuera de horario escolar";
-                document.getElementById('class-countdown-timer').innerText = "00:00";
-                return;
-            }
-
-            const elapsedToday = minutesTotal - schoolStart;
-            const currentBlockIndex = Math.floor(elapsedToday / totalBlock);
-            const timeInBlock = elapsedToday % totalBlock;
-
-            if (timeInBlock < classDuration) {
-                const minsLeft = classDuration - timeInBlock;
-                const secsLeft = 59 - now.getSeconds();
-                document.getElementById('class-status-text').innerText = `Clase activa (#${currentBlockIndex + 1})`;
-                document.getElementById('class-countdown-timer').innerText = `${String(minsLeft).padStart(2,'0')}:${String(secsLeft).padStart(2,'0')}`;
-            } else {
-                document.getElementById('class-status-text').innerText = "¡RecESO / Cambio de clase!";
-                document.getElementById('class-countdown-timer').innerText = "LIBRE";
-            }
+            let hours = now.getHours();
+            let minutes = now.getMinutes();
+            minutes = minutes < 10 ? '0' + minutes : minutes;
+            document.getElementById('status-time').innerText = `${hours}:${minutes}`;
         }
-        setInterval(updateClassClock, 1000);
-
-        // Cuaderno por Materia
-        function openNotebook(subjectId) {
-            const sub = localData.subjects.find(s => s.id === subjectId);
-            if (!sub) return;
-            activeNotebookId = subjectId;
-            document.getElementById('notebook-title').innerText = sub.name;
-            document.getElementById('notebook-textarea').value = sub.notebook || '';
-            switchTab('notebook');
-        }
-
-        function saveNotebookContent() {
-            if (!activeNotebookId) return;
-            const sub = localData.subjects.find(s => s.id === activeNotebookId);
-            if (sub) {
-                sub.notebook = document.getElementById('notebook-textarea').value;
-                saveAndSync();
-                alert("¡Apuntes guardados en la nube!");
-            }
-        }
-
-        // Ajustes y Materias
-        function renderSettingsSubjects() {
-            const list = document.getElementById('subjects-manage-list');
-            list.innerHTML = "";
-            const addBtn = document.getElementById('add-subject-btn');
-            const nameInput = document.getElementById('new-subject-name');
-            const salonInput = document.getElementById('new-subject-salon');
-
-            if (localData.subjects.length >= 20) {
-                addBtn.disabled = true;
-                nameInput.placeholder = "Límite de 20 alcanzado";
-                nameInput.disabled = true;
-                salonInput.disabled = true;
-            } else {
-                addBtn.disabled = false;
-                nameInput.placeholder = "Materia...";
-                nameInput.disabled = false;
-                salonInput.disabled = false;
-            }
-
-            localData.subjects.forEach((sub, index) => {
-                const row = document.createElement('div');
-                row.className = 'subject-manage-row';
-                row.innerHTML = `
-                    <div style="display:flex; gap:6px; flex:1; align-items:center;">
-                        <input type="text" value="${sub.name}" id="sub-name-${index}" style="padding:4px; border:1px solid #ddd; border-radius:4px; font-size:12px; width:100px;">
-                        <input type="text" value="${sub.salon}" id="sub-salon-${index}" style="padding:4px; border:1px solid #ddd; border-radius:4px; font-size:12px; width:70px;">
-                        <button class="aqua-btn" onclick="updateSubject(${index})">Guardar</button>
-                    </div>
-                    <button class="aqua-btn danger" onclick="deleteSubject(${index})">Borrar</button>
-                `;
-                list.appendChild(row);
-            });
-        }
-
-        function addNewSubject() {
-            if (localData.subjects.length >= 20) return;
-            const name = document.getElementById('new-subject-name').value.trim();
-            const salon = document.getElementById('new-subject-salon').value.trim();
-            if (!name) return;
-
-            localData.subjects.push({ id: 's_' + Date.now(), name: name, salon: salon || 'Salón', notebook: '' });
-            document.getElementById('new-subject-name').value = '';
-            document.getElementById('new-subject-salon').value = '';
-            saveAndSync();
-        }
-
-        function updateSubject(index) {
-            const newName = document.getElementById(`sub-name-${index}`).value.trim();
-            const newSalon = document.getElementById(`sub-salon-${index}`).value.trim();
-            if (newName) {
-                localData.subjects[index].name = newName;
-                localData.subjects[index].salon = newSalon;
-                saveAndSync();
-                alert("¡Materia actualizada!");
-            }
-        }
-
-        function deleteSubject(index) {
-            localData.subjects.splice(index, 1);
-            saveAndSync();
-        }
-
-        // Pizarra Notas
-        function renderNotes() {
-            const emptyState = document.getElementById('empty-state');
-            const whiteboard = document.getElementById('whiteboard');
-            const floatingBtn = document.getElementById('floating-add-btn');
-
-            whiteboard.innerHTML = "";
-            if (!localData.notes || localData.notes.length === 0) {
-                emptyState.style.display = 'flex';
-                whiteboard.style.display = 'none';
-                floatingBtn.style.display = 'none';
-                return;
-            }
-
-            emptyState.style.display = 'none';
-            whiteboard.style.display = 'grid';
-            floatingBtn.style.display = 'flex';
-
-            localData.notes.forEach((note, index) => {
-                const noteDiv = document.createElement('div');
-                noteDiv.className = 'postit-note';
-                noteDiv.innerHTML = `
-                    <div>
-                        <div class="postit-title">${note.title || 'Sin título'}</div>
-                        <div class="postit-body">${note.body}</div>
-                    </div>
-                    <div class="postit-footer">
-                        <button class="aqua-btn danger" style="padding:2px 6px; font-size:10px;" onclick="deleteNote(${index})">Borrar</button>
-                    </div>
-                `;
-                whiteboard.appendChild(noteDiv);
-            });
-        }
-
-        function openNoteEditor() {
-            if (localData.notes && localData.notes.length >= 20) return;
-            document.getElementById('note-title-input').value = '';
-            document.getElementById('note-body-input').value = '';
-            document.getElementById('word-counter').innerText = '0/25 palabras';
-            document.getElementById('note-modal-overlay').style.display = 'flex';
-            document.getElementById('note-title-input').focus();
-        }
-
-        function checkWordLimit() {
-            const textarea = document.getElementById('note-body-input');
-            const words = textarea.value.trim() ? textarea.value.trim().split(/\s+/) : [];
-            if (words.length > 25) {
-                textarea.value = words.slice(0, 25).join(' ');
-            }
-            const currentWords = textarea.value.trim() ? textarea.value.trim().split(/\s+/).length : 0;
-            document.getElementById('word-counter').innerText = `${currentWords}/25 palabras`;
-        }
-
-        function saveNewNote() {
-            const title = document.getElementById('note-title-input').value.trim();
-            const body = document.getElementById('note-body-input').value.trim();
-            if (!body && !title) {
-                document.getElementById('note-modal-overlay').style.display = 'none';
-                return;
-            }
-            if (!localData.notes) localData.notes = [];
-            if (localData.notes.length < 20) {
-                localData.notes.push({ title: title || 'Nota', body: body || '' });
-                saveAndSync();
-            }
-            document.getElementById('note-modal-overlay').style.display = 'none';
-        }
-
-        function deleteNote(index) {
-            localData.notes.splice(index, 1);
-            saveAndSync();
-        }
-
-        // Mini Buscaminas
-        function initMinesweeper() {
-            const board = document.getElementById('minesweeper-board');
-            board.innerHTML = "";
-            for (let i = 0; i < 24; i++) {
-                const cell = document.createElement('div');
-                cell.className = 'mine-cell';
-                cell.innerText = '';
-                cell.onclick = () => {
-                    cell.classList.add('revealed');
-                    cell.innerText = Math.random() > 0.8 ? '💣' : '✓';
-                };
-                board.appendChild(cell);
-            }
-        }
-
-        function resetAllData() {
-            if (confirm("¿Restablecer todo a cero?")) {
-                localData = JSON.parse(JSON.stringify(defaultData));
-                saveAndSync();
-            }
-        }
-
-        window.onload = renderAll;
+        setInterval(updateClock, 1000);
+        updateClock();
     </script>
 </body>
 </html>
